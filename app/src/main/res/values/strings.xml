@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">VkApp</string>
+    <string name="snack_bar_text">Vk, hello from toolbar</string>
+    <string name="error_message">Error</string>
+    <string name="loading_text">Loading...</string>
+    <string name="vk_app_catalog">Vk app catalog</string>
+    <string name="apps_catalog">Apps catalog</string>
+    <string name="about_app">About app</string>
+    <string name="back">Back</string>
+    <string name="showcase">Showcase</string>
 </resources>

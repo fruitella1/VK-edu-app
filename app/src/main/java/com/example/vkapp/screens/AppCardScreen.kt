@@ -31,11 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.vkapp.R
 import com.example.vkapp.data.AppInfo
 import com.example.vkapp.data.loadApps
 import com.example.vkapp.items.AppListItem
@@ -50,10 +51,10 @@ fun AppCardScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("О приложении") },
+                title = { Text(stringResource(R.string.about_app)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "назад")
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -88,7 +89,7 @@ fun AppListShowCase(onAppClick: (AppInfo) -> Unit = {}) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            "Витрина",
+            stringResource(R.string.showcase),
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(),
             fontSize = 20.sp

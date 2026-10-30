@@ -1,4 +1,4 @@
-package com.example.vkapp.navigation
+package com.example.vkapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -8,10 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.vkapp.data.loadApps
-import com.example.vkapp.screens.AppCardScreen
-import com.example.vkapp.screens.AppListScreen
-import com.example.vkapp.viewmodel.AppListViewModel
+import com.example.vkapp.presentation.screens.AppCardScreen
+import com.example.vkapp.presentation.screens.AppListScreen
+import com.example.vkapp.presentation.state.AppListUiState
+import com.example.vkapp.presentation.viewmodel.AppListViewModel
 
 @Composable
 fun AppNavigation(viewModel: AppListViewModel) {
@@ -38,10 +38,11 @@ fun AppNavigation(viewModel: AppListViewModel) {
                 NavType.IntType
         })) { backStackEntry ->
             val appIndex = backStackEntry.arguments?.getInt(APP_INDEX) ?: -1
-            val appList = loadApps()
-            val app = appList.getOrNull(appIndex)
+            val appList = state as? AppListUiState.Success
+            val app = appList?.apps?.getOrNull(appIndex)
             if (app != null) {
                 AppCardScreen(
+                    appList = appList.apps,
                     appInfo = app,
                     onBackClick = { navController.popBackStack() },
                     onShowCaseClick = { navController.popBackStack() })

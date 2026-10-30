@@ -1,10 +1,10 @@
-package com.example.vkapp.viewmodel
+package com.example.vkapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.vkapp.data.loadApps
-import com.example.vkapp.events.AppListEvent
-import com.example.vkapp.state.AppListUiState
+import com.example.vkapp.domain.repository.AppRepository
+import com.example.vkapp.presentation.events.AppListEvent
+import com.example.vkapp.presentation.state.AppListUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class AppListViewModel : ViewModel() {
+class AppListViewModel(repository: AppRepository) : ViewModel() {
     private val _state: MutableStateFlow<AppListUiState> = MutableStateFlow(AppListUiState.Loading)
 
     val state: StateFlow<AppListUiState> = _state.asStateFlow()
@@ -23,7 +23,7 @@ class AppListViewModel : ViewModel() {
     val events: Flow<AppListEvent> = _eventChannel.receiveAsFlow()
 
     init {
-        _state.value = AppListUiState.Success(apps = loadApps())
+        _state.value = AppListUiState.Success(apps = repository.getApps())
     }
 
     fun onToolBarClick() {

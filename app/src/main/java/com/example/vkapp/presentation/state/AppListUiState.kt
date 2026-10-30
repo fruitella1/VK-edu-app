@@ -1,6 +1,6 @@
-package com.example.vkapp.state
+package com.example.vkapp.presentation.state
 
-import com.example.vkapp.data.AppInfo
+import com.example.vkapp.domain.model.AppInfo
 
 
 sealed class AppListUiState {

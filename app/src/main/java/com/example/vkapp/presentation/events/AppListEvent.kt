@@ -1,4 +1,4 @@
-package com.example.vkapp.events
+package com.example.vkapp.presentation.events
 
 sealed interface AppListEvent {
     object ShowSnackBar: AppListEvent

@@ -1,4 +1,4 @@
-package com.example.vkapp.screens
+package com.example.vkapp.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -37,9 +37,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import com.example.vkapp.R
-import com.example.vkapp.events.AppListEvent
-import com.example.vkapp.items.AppListItem
-import com.example.vkapp.state.AppListUiState
+import com.example.vkapp.presentation.events.AppListEvent
+import com.example.vkapp.presentation.items.AppListItem
+import com.example.vkapp.presentation.state.AppListUiState
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)

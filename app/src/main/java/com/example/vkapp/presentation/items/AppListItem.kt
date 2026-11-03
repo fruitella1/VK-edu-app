@@ -1,4 +1,4 @@
-package com.example.vkapp.items
+package com.example.vkapp.presentation.items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.vkapp.data.AppInfo
+import com.example.vkapp.domain.model.AppInfo
 
 @Composable
 fun AppListItem(onClick: (AppInfo) -> Unit, app: AppInfo) {

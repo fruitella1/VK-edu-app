@@ -1,4 +1,4 @@
-package com.example.vkapp.screens
+package com.example.vkapp.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,23 +26,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.vkapp.data.AppInfo
-import com.example.vkapp.data.loadApps
-import com.example.vkapp.items.AppListItem
+import com.example.vkapp.R
+import com.example.vkapp.domain.model.AppInfo
+import com.example.vkapp.presentation.items.AppListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppCardScreen(
+    appList: List<AppInfo>,
     appInfo: AppInfo,
     onBackClick: () -> Unit = {},
     onShowCaseClick: (AppInfo) -> Unit = {}
@@ -50,10 +50,13 @@ fun AppCardScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("О приложении") },
+                title = { Text(stringResource(R.string.about_app)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "назад")
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
                     }
                 }
             )
@@ -69,14 +72,13 @@ fun AppCardScreen(
         ) {
             AppCard(appInfo)
 
-            AppListShowCase(onAppClick = { clicked -> onShowCaseClick(clicked) })
+            AppListShowCase(appList = appList, onAppClick = { clicked -> onShowCaseClick(clicked) })
         }
     }
 }
 
 @Composable
-fun AppListShowCase(onAppClick: (AppInfo) -> Unit = {}) {
-    val appList = remember { loadApps() }
+fun AppListShowCase(appList: List<AppInfo>, onAppClick: (AppInfo) -> Unit = {}) {
 
     val chunks = appList.chunked(3)
 
@@ -88,7 +90,7 @@ fun AppListShowCase(onAppClick: (AppInfo) -> Unit = {}) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            "Витрина",
+            stringResource(R.string.showcase),
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(),
             fontSize = 20.sp

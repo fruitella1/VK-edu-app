@@ -2,9 +2,10 @@ package com.example.vkapp.data.source
 
 import com.example.vkapp.R
 import com.example.vkapp.data.dto.AppDto
+import javax.inject.Inject
 
-class LocalAppDataSource {
-    fun getApps():List<AppDto>{
+class LocalAppDataSource @Inject constructor() {
+    fun getApps(): List<AppDto> {
         return listOf(
             AppDto(
                 id = 0,

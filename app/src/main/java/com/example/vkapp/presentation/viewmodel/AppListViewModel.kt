@@ -6,6 +6,7 @@ import com.example.vkapp.domain.repository.AppRepository
 import com.example.vkapp.presentation.events.AppListEvent
 import com.example.vkapp.presentation.state.AppListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,17 @@ class AppListViewModel @Inject constructor(repository: AppRepository) : ViewMode
     val events: Flow<AppListEvent> = _eventChannel.receiveAsFlow()
 
     init {
-        _state.value = AppListUiState.Success(apps = repository.getApps())
+        viewModelScope.launch {
+            _state.value = AppListUiState.Loading
+
+            try {
+                _state.value = AppListUiState.Success(apps = repository.getApps())
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _state.value = AppListUiState.Error()
+            }
+        }
     }
 
     fun onToolBarClick() {

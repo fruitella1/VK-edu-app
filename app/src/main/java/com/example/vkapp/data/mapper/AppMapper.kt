@@ -8,7 +8,7 @@ fun AppDto.toDomain(): AppInfo {
         id = id,
         name = name,
         description = description,
-        image = image,
+        iconUrl = iconUrl,
         category = category
     )
 }

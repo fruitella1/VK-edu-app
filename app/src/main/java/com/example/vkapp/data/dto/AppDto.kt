@@ -1,12 +1,9 @@
 package com.example.vkapp.data.dto
 
-import androidx.annotation.DrawableRes
-
 data class AppDto(
-    val id: Int,
+    val id: String,
     val name: String,
     val description: String,
-    @DrawableRes
-    val image: Int,
+    val iconUrl: String,
     val category: String,
 )

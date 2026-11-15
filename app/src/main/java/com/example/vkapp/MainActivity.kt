@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.vkapp.presentation.navigation.AppNavigation
-import com.example.vkapp.ui.theme.VkAppTheme
 import com.example.vkapp.presentation.viewmodel.AppListViewModel
+import com.example.vkapp.ui.theme.VkAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

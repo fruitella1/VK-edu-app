@@ -3,13 +3,13 @@ package com.example.vkapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.vkapp.presentation.screens.AppCardScreen
 import com.example.vkapp.presentation.screens.AppListScreen
 import com.example.vkapp.presentation.state.AppListUiState

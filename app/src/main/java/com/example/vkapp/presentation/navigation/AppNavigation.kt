@@ -1,3 +1,4 @@
+
 package com.example.vkapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
@@ -8,9 +9,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.vkapp.presentation.screens.AppCardScreen
 import com.example.vkapp.presentation.screens.AppListScreen
 import com.example.vkapp.presentation.state.AppListUiState
+import com.example.vkapp.presentation.viewmodel.AppCardViewModel
 import com.example.vkapp.presentation.viewmodel.AppListViewModel
 
 @Composable
@@ -26,26 +29,44 @@ fun AppNavigation(viewModel: AppListViewModel) {
     ) {
         composable(route = APP_LIST_SCREEN) {
             AppListScreen(
-                onAppClick = { index -> navController.navigate("$APP_CARD_SCREEN/${index}") },
+                onAppClick = { index ->
+                    navController.navigate("$APP_CARD_SCREEN/$index")
+                },
                 state = state,
                 events = events,
                 onToolBarClick = { viewModel.onToolBarClick() }
             )
         }
 
-        composable(route = APP_CARD_SCREEN_ROUTE, arguments = listOf(navArgument(APP_INDEX) {
-            type =
-                NavType.IntType
-        })) { backStackEntry ->
+        composable(
+            route = APP_CARD_SCREEN_ROUTE,
+            arguments = listOf(
+                navArgument(APP_INDEX) {
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+
+            val appCardViewModel: AppCardViewModel = hiltViewModel()
+            val installState by appCardViewModel.installState.collectAsStateWithLifecycle()
+
             val appIndex = backStackEntry.arguments?.getInt(APP_INDEX) ?: -1
             val appList = state as? AppListUiState.Success
             val app = appList?.apps?.getOrNull(appIndex)
+
             if (app != null) {
                 AppCardScreen(
                     appList = appList.apps,
                     appInfo = app,
-                    onBackClick = { navController.popBackStack() },
-                    onShowCaseClick = { navController.popBackStack() })
+                    installState = installState,
+                    onInstallClick = appCardViewModel::onInstallClick,
+                    onBackClick = {
+                        navController.popBackStack()
+                    },
+                    onShowCaseClick = {
+                        navController.popBackStack()
+                    }
+                )
             }
         }
     }

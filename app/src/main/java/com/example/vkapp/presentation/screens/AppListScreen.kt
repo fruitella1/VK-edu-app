@@ -13,29 +13,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.WarningAmber
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.example.vkapp.R
 import com.example.vkapp.presentation.events.AppListEvent
 import com.example.vkapp.presentation.items.AppListItem
@@ -52,7 +52,6 @@ fun AppListScreen(
 ) {
 
     val snackBarHostState = remember { SnackbarHostState() }
-
     val snackBarText = stringResource(R.string.snack_bar_text)
 
     LaunchedEffect(Unit) {
@@ -61,27 +60,37 @@ fun AppListScreen(
         }
     }
 
-    Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-        TopAppBar(
-            title = {
-                Text(stringResource(R.string.vk_app_catalog))
-            }, navigationIcon = {
-                Image(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clip(RoundedCornerShape(6.dp)),
-                    painter = painterResource(R.drawable.vk_icon),
-                    contentDescription = stringResource(R.string.apps_catalog)
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(stringResource(R.string.vk_app_catalog))
+                },
+                navigationIcon = {
+                    Image(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clip(RoundedCornerShape(6.dp)),
+                        painter = painterResource(R.drawable.vk_icon),
+                        contentDescription = stringResource(R.string.apps_catalog)
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                modifier = Modifier.clickable(
+                    enabled = true,
+                    onClick = onToolBarClick
                 )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                titleContentColor = MaterialTheme.colorScheme.onPrimary
-            ),
-            modifier = Modifier.clickable(enabled = true, onClick = onToolBarClick)
-        )
-    }, snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState)
+        }
     ) { paddingValues ->
+
         when (state) {
             is AppListUiState.Success -> {
                 LazyColumn(
@@ -90,7 +99,11 @@ fun AppListScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     itemsIndexed(state.apps) { index, item ->
-                        AppListItem(onClick = { onAppClick(index) }, item)
+                        AppListItem(
+                            onClick = { onAppClick(index) },
+                            app = item,
+                            rating = state.ratings[item.id]
+                        )
                     }
                 }
             }
@@ -111,7 +124,9 @@ fun AppListScreen(
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+
                         Spacer(modifier = Modifier.height(16.dp))
+
                         LinearProgressIndicator(
                             modifier = Modifier.width(200.dp)
                         )

@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,12 +37,15 @@ import coil.compose.AsyncImage
 import com.example.vkapp.R
 import com.example.vkapp.domain.model.AppInfo
 import com.example.vkapp.presentation.items.AppListItem
+import com.example.vkapp.presentation.state.InstallState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppCardScreen(
     appList: List<AppInfo>,
     appInfo: AppInfo,
+    installState: InstallState,
+    onInstallClick: () -> Unit,
     onBackClick: () -> Unit = {},
     onShowCaseClick: (AppInfo) -> Unit = {}
 ) {
@@ -59,8 +63,7 @@ fun AppCardScreen(
                 }
             )
         }
-    )
-    { paddingValues ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -68,23 +71,32 @@ fun AppCardScreen(
                 .padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            AppCard(appInfo)
+            AppCard(
+                app = appInfo,
+                installState = installState,
+                onInstallClick = onInstallClick
+            )
 
-            AppListShowCase(appList = appList, onAppClick = { clicked -> onShowCaseClick(clicked) })
+            AppListShowCase(
+                appList = appList,
+                onAppClick = { clicked -> onShowCaseClick(clicked) }
+            )
         }
     }
 }
 
 @Composable
-fun AppListShowCase(appList: List<AppInfo>, onAppClick: (AppInfo) -> Unit = {}) {
+fun AppListShowCase(
+    appList: List<AppInfo>,
+    onAppClick: (AppInfo) -> Unit = {}
+) {
 
     val chunks = appList.chunked(3)
 
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { chunks.size })
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
@@ -94,14 +106,20 @@ fun AppListShowCase(appList: List<AppInfo>, onAppClick: (AppInfo) -> Unit = {}) 
             fontSize = 20.sp
         )
 
-        HorizontalPager(state = pagerState, modifier = Modifier.fillMaxWidth()) { page ->
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxWidth()
+        ) { page ->
             ShowCaseItem(onAppClick, chunks[page])
         }
     }
 }
 
 @Composable
-fun ShowCaseItem(onClick: (AppInfo) -> Unit, chunk: List<AppInfo>) {
+fun ShowCaseItem(
+    onClick: (AppInfo) -> Unit,
+    chunk: List<AppInfo>
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         chunk.forEach { it ->
             AppListItem(onClick, it)
@@ -112,7 +130,11 @@ fun ShowCaseItem(onClick: (AppInfo) -> Unit, chunk: List<AppInfo>) {
 }
 
 @Composable
-fun AppCard(app: AppInfo) {
+fun AppCard(
+    app: AppInfo,
+    installState: InstallState,
+    onInstallClick: () -> Unit
+) {
     ElevatedCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(8.dp)) {
             Row(
@@ -152,6 +174,24 @@ fun AppCard(app: AppInfo) {
                 fontWeight = FontWeight.Light,
                 style = MaterialTheme.typography.bodyMedium
             )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+
+            Button(
+                onClick = onInstallClick,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = installState !is InstallState.Installed
+            ) {
+                Text(
+                    text = when (installState) {
+                        is InstallState.NotInstalled -> "Установить"
+                        is InstallState.Installing -> "Установка ${installState.progress}% · Отменить"
+                        is InstallState.Installed -> "Установлено"
+                    }
+                )
+            }
+
         }
     }
 }

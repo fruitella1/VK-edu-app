@@ -21,8 +21,15 @@ import coil.compose.AsyncImage
 import com.example.vkapp.domain.model.AppInfo
 
 @Composable
-fun AppListItem(onClick: (AppInfo) -> Unit, app: AppInfo) {
-    ElevatedCard(modifier = Modifier.fillMaxWidth(), onClick = { onClick(app) }) {
+fun AppListItem(
+    onClick: (AppInfo) -> Unit,
+    app: AppInfo,
+    rating: Float? = null
+) {
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = { onClick(app) }
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -60,6 +67,16 @@ fun AppListItem(onClick: (AppInfo) -> Unit, app: AppInfo) {
                     fontWeight = FontWeight.Light,
                     style = MaterialTheme.typography.bodySmall
                 )
+
+                if (rating != null) {
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = "★ $rating",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
         }
     }

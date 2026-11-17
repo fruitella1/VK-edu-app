@@ -12,3 +12,13 @@ fun AppDto.toDomain(): AppInfo {
         category = category
     )
 }
+
+fun AppInfo.toDto(): AppDto {
+    return AppDto(
+        id = id,
+        name = name,
+        description = description,
+        iconUrl = iconUrl,
+        category = category
+    )
+}

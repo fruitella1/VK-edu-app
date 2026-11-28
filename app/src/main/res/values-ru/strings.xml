@@ -9,4 +9,9 @@
     <string name="about_app">О приложении</string>
     <string name="back">Назад</string>
     <string name="showcase">Витрина</string>
+    <string name="add_to_wishlist">Добавить в понравившиеся</string>
+    <string name="not_installed_app">Установить</string>
+    <string name="installed_app">Установленно</string>
+    <string name="install_in_progress">Установка ${installState.progress}% · Отменить</string>
+    <string name="app_not_found">Приложение не найденно</string>
 </resources>

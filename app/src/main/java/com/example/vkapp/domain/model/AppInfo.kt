@@ -6,4 +6,5 @@ data class AppInfo(
     val description: String,
     val iconUrl: String,
     val category: String,
+    val isInWishList: Boolean = false,
 )

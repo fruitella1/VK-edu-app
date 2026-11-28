@@ -15,6 +15,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,7 +49,8 @@ fun AppCardScreen(
     installState: InstallState,
     onInstallClick: () -> Unit,
     onBackClick: () -> Unit = {},
-    onShowCaseClick: (AppInfo) -> Unit = {}
+    onShowCaseClick: (AppInfo) -> Unit = {},
+    onWishListClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -59,6 +62,21 @@ fun AppCardScreen(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = stringResource(R.string.back)
                         )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onWishListClick) {
+                        if (appInfo.isInWishList) {
+                            Icon(
+                                imageVector = Icons.Filled.Favorite,
+                                contentDescription = stringResource(R.string.add_to_wishlist)
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.FavoriteBorder,
+                                contentDescription = stringResource(R.string.add_to_wishlist)
+                            )
+                        }
                     }
                 }
             )
@@ -185,9 +203,9 @@ fun AppCard(
             ) {
                 Text(
                     text = when (installState) {
-                        is InstallState.NotInstalled -> "Установить"
-                        is InstallState.Installing -> "Установка ${installState.progress}% · Отменить"
-                        is InstallState.Installed -> "Установлено"
+                        is InstallState.NotInstalled -> stringResource(R.string.not_installed_app)
+                        is InstallState.Installing -> stringResource(R.string.install_in_progress)
+                        is InstallState.Installed -> stringResource(R.string.installed_app)
                     }
                 )
             }
